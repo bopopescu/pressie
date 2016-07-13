@@ -27,9 +27,11 @@
 
     <properties>
         <dep.airlift.version>0.131</dep.airlift.version>
+        <dep.airlift.resolver.version>1.3</dep.airlift.resolver.version>
     </properties>
 
     <modules>
+        <module>pressie-artifact</module>
         <module>pressie-launcher</module>
         <module>pressie-repository</module>
     </modules>
@@ -41,6 +43,12 @@
                 <groupId>io.airlift</groupId>
                 <artifactId>units</artifactId>
                 <version>${dep.airlift.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.airlift.resolver</groupId>
+                <artifactId>resolver</artifactId>
+                <version>${dep.airlift.resolver.version}</version>
             </dependency>
 
         </dependencies>
