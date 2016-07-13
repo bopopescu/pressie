@@ -10,4 +10,12 @@
     <description>Pressie - Launcher</description>
     <packaging>jar</packaging>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>units</artifactId>
+        </dependency>
+
+    </dependencies>
 </project>
