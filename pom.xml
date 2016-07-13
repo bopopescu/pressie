@@ -11,8 +11,6 @@
     <description>Pressie</description>
     <url>https://github.com/wrmsr/pressie</url>
 
-    <inceptionYear>2012</inceptionYear>
-
     <licenses>
         <license>
             <name>Apache License 2.0</name>
@@ -28,7 +26,8 @@
     </scm>
 
     <modules>
-      <module>pressie-launcher</module>
+        <module>pressie-launcher</module>
+        <module>pressie-repository</module>
     </modules>
 
 </project>

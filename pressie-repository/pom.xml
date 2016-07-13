@@ -6,8 +6,8 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>pressie-launcher</artifactId>
-    <description>Pressie - Launcher</description>
+    <artifactId>pressie-repository</artifactId>
+    <description>Pressie - Repository</description>
     <packaging>jar</packaging>
 
 </project>
