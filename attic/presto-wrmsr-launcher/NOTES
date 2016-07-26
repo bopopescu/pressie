@@ -1,0 +1,415 @@
+https://github.com/dockerfile/java/blob/master/oracle-java8/Dockerfile
+
+
+/usr/bin/presto -> /usr/lib/presto/bin/presto
+/usr/lib/presto/bin/presto
+/usr/lib/presto/repository/*
+/etc/presto/site.yaml
+
+possibly:
+/usr/lib/presto/(HEAD|SHORT|TAGS)
+/usr/lib/presto/classpaths/* <- move to MANIFEST.MF
+
+no:
+/etc/init.d/presto
+
+https://en.wikipedia.org/wiki/Deb_(file_format)
+data.tar shits already compressed
+
+
+control.tar.gz
+data.tar.xz
+debian-binary
+
+control.tar.gz:
+control
+md5sums
+
+
+https://www.debian.org/doc/manuals/maint-guide/dreq.en.html#control
+
+
+http://palletops.com/pallet/doc/reference-0.8/
+https://github.com/pallet/pallet
+https://github.com/palletops/clj-docker
+http://palletops.com/pallet/doc/reference-0.8/
+http://palletops.com/pallet/doc/how-tos/using-pallet-with-existing-servers/
+https://github.com/talios/clojure-maven-plugin ugh :/
+
+
+smartstack self-ping port discovery
+
+wait for nodes barrier function w timeout
+
+ttl the lock node
+
+
+TODO jarsync via http endpoint, master sends to slaves
+ - version check on slave boot, autoupdate
+
+
+reactor command
+ reactor build <name> --num-workers n
+  (waits for n workers)
+ reactor react <name>
+
+
+hell also add an exec command also with a --num-workers barrier
+
+use jar manifest classpath, see hadoop
+
+package org.apache.hadoop.fs;
+public class FileUtil
+
+also have zk lock for reactors
+ -> spi DistributedMutexProvider
+
+
+handle SIGTERM
+ - prob via bash wrapper to redirect to some other sig + sun.misc.signal
+https://github.com/mesosphere/marathon/issues/712
+
+!!! flip watcher - list of files to watch for changes, reboot when changed
+ - done in launcher, preseve original args (env var?)
+ - heh ffi can watch src trees like apache and recreate the subprocs too
+
+
+https://github.com/tcurdt/jdeb
+
+
+https://github.com/Yelp/paasta/blob/master/paasta_tools/cli/cmds/local_run.py#L59
+
+
+https://dzone.com/articles/java-platform-deployment
+- http://blog.ragozin.info/2013/01/remote-code-execution-in-java-made.html
+
+
+jdbc equivalence for iterative dev - will ofc be wrong for txnlity
+id-range and other constrained builds? io bound by kafka? replanned?
+
+http://www.cs.cmu.edu/~wcohen/GuideToBiology-sampleChapter-release1.4.pdf
+
+subprocess modulo env var (% arg?)
+
+wtf is the zipkin id of a fucking adhoc batch or daemon.
+
+*** disable all compression and encoding for local exec
+
+
+/usr/lib/jvm/java-8-oracle-1.8.0.45/lib/libjvmkill.so
+
+** do what mvnw does:
+ apple paths
+ javaExecutable fallback
+
+
+
+http://logback.qos.ch/manual/configuration.html#auto_configuration
+
+
+  <servlet>
+    <servlet-name>ViewStatusMessages</servlet-name>
+    <servlet-class>ch.qos.logback.classic.ViewStatusMessagesServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ViewStatusMessages</servlet-name>
+    <url-pattern>/lbClassicStatus</url-pattern>
+  </servlet-mapping>
+
+
+subprocess log appender cfg to stdintoscribe
+syslog
+raw scribe? kafka?
+https://github.com/infynyxx/logback-scribe/tree/master/src/main/java/com/infynyxx/logback/scribe
+
+http://logback.qos.ch/manual/appenders.html#SyslogAppender
+http://logback.qos.ch/xref/ch/qos/logback/classic/net/SyslogAppender.html
+http://blog.trifork.com/2010/01/14/logging-to-the-syslog-from-a-java-application/
+https://en.wikipedia.org/wiki/Syslog
+
+https://github.com/qos-ch/logback-contrib/wiki
+
+
+
+https://mrjob.readthedocs.org/en/latest/guides/setup-cookbook.html
+https://hadoop.apache.org/docs/stable/api/org/apache/hadoop/filecache/DistributedCache.html
+https://mrjob.readthedocs.org/en/latest/guides/emr-bootstrap-cookbook.html
+
+
+
+
+    LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+    JoranConfigurator configurator = new JoranConfigurator();
+    configurator.setContext(lc);
+    InputStream in = Resources.getResource("logback.xml").openStream();
+    lc.reset();
+    configurator.doConfigure(in);
+    java.util.logging.LogManager.getLogManager().reset();
+    SLF4JBridgeHandler.removeHandlersForRootLogger();
+    SLF4JBridgeHandler.install();
+
+
+
+https://github.com/huxi/lilith
+ - add parsers for logline layout formats
+ http://mailman.qos.ch/pipermail/logback-dev/2013-April/008754.html
+ https://github.com/qos-ch/logback-decoder
+  ugh esl
+  https://www.apache.org/legal/resolved.html#category-b fuck my life
+
+
+
+ghetto hardcoded unknown cfg node warning
+ - or gen on build lol jk
+
+
+???
+ setup NxN fully-connected immortal http2 conns at boot to work around routing issues?
+
+
+
+
+
+--heap
+--debug-port
+--jmx-port
+
+--coordinator
+--node-id
+--random-node-id
+--discovery-uri
+
+com.facebook.presto.server.PluginManager=DEBUG
+com.facebook.presto=INFO
+com.ning.http.client=WARN
+com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory=WARN
+coordinator=false
+coordinator=true
+discovery-server.enabled=true
+discovery.uri=http://example.net:8080
+distributed-joins-enabled=true
+exchange.http-client.connect-timeout=1m
+exchange.http-client.max-connections-per-server=1000
+exchange.http-client.max-connections=1000
+exchange.http-client.read-timeout=1m
+experimental-syntax-enabled=true
+http-server.http.port=8080
+node-scheduler.include-coordinator=false
+node-scheduler.include-coordinator=true
+node-scheduler.multiple-tasks-per-node-enabled=true
+node.data-dir=/Users/wtimoney/presto/data/
+node.environment=production
+node.environment=test
+node.id=ffffffff-ffff-ffff-ffff-ffffffffffff
+plugin.dir=/dev/null
+presto.version=0.105-SNAPSHOT
+presto.version=testversion
+query.client.timeout=5m
+query.max-age=30m
+scheduler.http-client.connect-timeout=1m
+scheduler.http-client.max-connections-per-server=1000
+scheduler.http-client.max-connections=1000
+scheduler.http-client.read-timeout=1m
+task.max-memory=1GB
+
+s3
+ec2
+hdfs
+
+
+
+
+        // NameStore.getInstance().put("www.google.com", "www.microsoft.com");
+        // InetAddress i = InetAddress.getAllByName("www.google.com")[0];
+        // System.out.println(i);
+
+
+
+
+FIXME set external port to $PORT_8888
+
+
+
+
+    /**
+     * Create a jar file at the given path, containing a manifest with a classpath
+     * that references all specified entries.
+     *
+     * Some platforms may have an upper limit on command line length.  For example,
+     * the maximum command line length on Windows is 8191 characters, but the
+     * length of the classpath may exceed this.  To work around this limitation,
+     * use this method to create a small intermediate jar with a manifest that
+     * contains the full classpath.  It returns the absolute path to the new jar,
+     * which the caller may set as the classpath for a new process.
+     *
+     * Environment variable evaluation is not supported within a jar manifest, so
+     * this method expands environment variables before inserting classpath entries
+     * to the manifest.  The method parses environment variables according to
+     * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,
+     * environment variables are case-insensitive.  For example, %VAR% and %var%
+     * evaluate to the same value.
+     *
+     * Specifying the classpath in a jar manifest does not support wildcards, so
+     * this method expands wildcards internally.  Any classpath entry that ends
+     * with * is translated to all files at that path with extension .jar or .JAR.
+     *
+     * @param inputClassPath String input classpath to bundle into the jar manifest
+     * @param pwd Path to working directory to save jar
+     * @param targetDir path to where the jar execution will have its working dir
+     * @param callerEnv Map<String, String> caller's environment variables to use
+     *   for expansion
+     * @return String[] with absolute path to new jar in position 0 and
+     *   unexpanded wild card entry path in position 1
+     * @throws IOException if there is an I/O error while writing the jar file
+     */
+    public static String[] createJarWithClassPath(String inputClassPath, Path pwd,
+            Path targetDir,
+            Map<String, String> callerEnv)
+            throws IOException
+    {
+        // Replace environment variables, case-insensitive on Windows
+        @SuppressWarnings("unchecked")
+        Map<String, String> env = Shell.WINDOWS ? new CaseInsensitiveMap(callerEnv) :
+                callerEnv;
+        String[] classPathEntries = inputClassPath.split(File.pathSeparator);
+        for (int i = 0; i < classPathEntries.length; ++i) {
+            classPathEntries[i] = StringUtils.replaceTokens(classPathEntries[i],
+                    StringUtils.ENV_VAR_PATTERN, env);
+        }
+        File workingDir = new File(pwd.toString());
+        if (!workingDir.mkdirs()) {
+            // If mkdirs returns false because the working directory already exists,
+            // then this is acceptable.  If it returns false due to some other I/O
+            // error, then this method will fail later with an IOException while saving
+            // the jar.
+            LOG.debug("mkdirs false for " + workingDir + ", execution will continue");
+        }
+
+        StringBuilder unexpandedWildcardClasspath = new StringBuilder();
+        // Append all entries
+        List<String> classPathEntryList = new ArrayList<String>(
+                classPathEntries.length);
+        for (String classPathEntry : classPathEntries) {
+            if (classPathEntry.length() == 0) {
+                continue;
+            }
+            if (classPathEntry.endsWith("*")) {
+                boolean foundWildCardJar = false;
+                // Append all jars that match the wildcard
+                Path globPath = new Path(classPathEntry).suffix("{.jar,.JAR}");
+                FileStatus[] wildcardJars = FileContext.getLocalFSFileContext().util()
+                        .globStatus(globPath);
+                if (wildcardJars != null) {
+                    for (FileStatus wildcardJar : wildcardJars) {
+                        foundWildCardJar = true;
+                        classPathEntryList.add(wildcardJar.getPath().toUri().toURL()
+                                .toExternalForm());
+                    }
+                }
+                if (!foundWildCardJar) {
+                    unexpandedWildcardClasspath.append(File.pathSeparator);
+                    unexpandedWildcardClasspath.append(classPathEntry);
+                }
+            }
+            else {
+                // Append just this entry
+                File fileCpEntry = null;
+                if (!new Path(classPathEntry).isAbsolute()) {
+                    fileCpEntry = new File(targetDir.toString(), classPathEntry);
+                }
+                else {
+                    fileCpEntry = new File(classPathEntry);
+                }
+                String classPathEntryUrl = fileCpEntry.toURI().toURL()
+                        .toExternalForm();
+
+                // File.toURI only appends trailing '/' if it can determine that it is a
+                // directory that already exists.  (See JavaDocs.)  If this entry had a
+                // trailing '/' specified by the caller, then guarantee that the
+                // classpath entry in the manifest has a trailing '/', and thus refers to
+                // a directory instead of a file.  This can happen if the caller is
+                // creating a classpath jar referencing a directory that hasn't been
+                // created yet, but will definitely be created before running.
+                if (classPathEntry.endsWith(Path.SEPARATOR) &&
+                        !classPathEntryUrl.endsWith(Path.SEPARATOR)) {
+                    classPathEntryUrl = classPathEntryUrl + Path.SEPARATOR;
+                }
+                classPathEntryList.add(classPathEntryUrl);
+            }
+        }
+        String jarClassPath = StringUtils.join(" ", classPathEntryList);
+
+        // Create the manifest
+        Manifest jarManifest = new Manifest();
+        jarManifest.getMainAttributes().putValue(
+                Attributes.Name.MANIFEST_VERSION.toString(), "1.0");
+        jarManifest.getMainAttributes().putValue(
+                Attributes.Name.CLASS_PATH.toString(), jarClassPath);
+
+        // Write the manifest to output JAR file
+        File classPathJar = File.createTempFile("classpath-", ".jar", workingDir);
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
+        JarOutputStream jos = null;
+        try {
+            fos = new FileOutputStream(classPathJar);
+            bos = new BufferedOutputStream(fos);
+            jos = new JarOutputStream(bos, jarManifest);
+        }
+        finally {
+            IOUtils.cleanup(LOG, jos, bos, fos);
+        }
+        String[] jarCp = {classPathJar.getCanonicalPath(),
+                          unexpandedWildcardClasspath.toString()};
+        return jarCp;
+    }
+
+
+
+
+#include <string.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+#ifndef FALLOC_FL_COLLAPSE_RANGE
+#define FALLOC_FL_COLLAPSE_RANGE        0x08
+#endif
+
+int main(int argc, const char * argv[])
+{
+    int ret;
+    char * page = malloc(4096);
+    int fd = open("test.txt", O_CREAT | O_TRUNC | O_RDWR, 0644);
+
+    if (fd == -1) {
+        free(page);
+        return (-1);
+    }
+
+    // Page A
+    printf("Write page A\n");
+    memset(page, 'A', 4096);
+    write(fd, page, 4096);
+
+    // Page B
+    printf("Write page B\n");
+    memset(page, 'B', 4096);
+    write(fd, page, 4096);
+
+    // Remove page A
+    ret = fallocate(fd, FALLOC_FL_COLLAPSE_RANGE, 0, 4096);
+    printf("Page A should be removed, ret = %d\n", ret);
+
+    close(fd);
+    free(page);
+
+    return (0);
+}
+
+
+
+
+http://juel.sourceforge.net/guide/start.html
+ - add env vars
+http://juel.sourceforge.net/guide/advanced/index.html
